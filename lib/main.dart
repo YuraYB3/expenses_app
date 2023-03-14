@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'Models/transaction.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class MyHomePage extends StatelessWidget {
   final List<Transaction> transactions = [
     Transaction(id: 'id1', title: 'title6', amount: 40, date: DateTime.now()),
@@ -44,91 +46,76 @@ class MyHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Card(
-                  color: Colors.blue,
-                  child: Text("CHART!!!"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: transactions.map((tx) {
-                        return SizedBox(
-                            height: 70,
-                            width: 300,
-                            child: Card(
-                              color: Colors.blue,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: 50,
-                                    height: 20,
-                                    // ignore: prefer_const_constructors
-                                    decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        border: Border.all(
-                                            color: Colors.white, width: 2)),
-                                    child: Center(
-                                        child: Text(
-                                      tx.title,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                  ),
-                                  Column(
+                GestureDetector(
+                    onTap: () {
+                      print('clicked');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: transactions.map((tx) {
+                            return SizedBox(
+                                height: 70,
+                                width: 300,
+                                child: Card(
+                                  color: Colors.white,
+                                  child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       Container(
-                                        width: 60,
-                                        height: 20,
+                                        width: 55,
+                                        height: 30,
                                         // ignore: prefer_const_constructors
                                         decoration: BoxDecoration(
-                                            color: Colors.blue,
+                                            color: Colors.white,
                                             border: Border.all(
-                                                color: Colors.white, width: 2)),
+                                                color: Colors.red, width: 2),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
                                         child: Center(
-                                          child: Text(
-                                            tx.amount.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
+                                            child: Text(
+                                          "\$${tx.amount}",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )),
                                       ),
-                                      Container(
-                                        width: 60,
-                                        height: 20,
-                                        // ignore: prefer_const_constructors
-                                        decoration: BoxDecoration(
-                                            color: Colors.blue,
-                                            border: Border.all(
-                                                color: Colors.white, width: 2)),
-                                        child: Center(
-                                          child: Text(
-                                            "${tx.date.day} ${tx.date.month}",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              tx.title,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                          Center(
+                                            child: Text(
+                                              DateFormat().format(tx.date),
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ));
-                      }).toList(),
-                    ),
-                  ),
-                )
+                                  ),
+                                ));
+                          }).toList(),
+                        ),
+                      ),
+                    )),
               ],
             )
           ],
