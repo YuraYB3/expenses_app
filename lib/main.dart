@@ -1,3 +1,4 @@
+import 'package:expenses_app/Widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -32,6 +33,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transactions = [];
+  List<Transaction> get _recentTransactions {
+    return transactions.where((element) {
+      return element.date
+          .isAfter(DateTime.now().subtract(const Duration(days: 7)));
+    }).toList();
+  }
 
   void submitData(TextEditingController titleController,
       TextEditingController amountController) {
@@ -68,7 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
               // ignore: prefer_const_literals_to_create_immutables
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [spendingCard(transactions)],
+              children: [
+                Chart(recentTransactions: _recentTransactions),
+                spendingCard(transactions)
+              ],
             )
           ],
         )),
@@ -85,53 +95,57 @@ SizedBox spendingCard(List transactions) {
         return SizedBox(
             height: 70,
             width: 300,
-            child: Card(
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 55,
-                    height: 30,
-                    // ignore: prefer_const_constructors
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.red, width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10))),
-                    child: Center(
-                        child: Text(
-                      "\$${tx.amount.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                        child: Text(
-                          tx.title,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
+            child: Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Card(
+                elevation: 6,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      //    width: 55,
+                      height: 40,
+                      // ignore: prefer_const_constructors
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.red, width: 2),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10))),
+                      child: Center(
+                          child: Text(
+                        "\$${tx.amount.toStringAsFixed(2)}",
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Center(
+                          child: Text(
+                            tx.title,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          DateFormat('dd/MM/yyyy').format(tx.date),
-                          style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
+                        Center(
+                          child: Text(
+                            DateFormat('dd/MM/yyyy').format(tx.date),
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ));
       }).toList(),
