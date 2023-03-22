@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          title: Text("Expensive"),
           backgroundColor: Colors.red,
           toolbarHeight: 70,
           actions: [showBottomSheet(context, submitData)],
